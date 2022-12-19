@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://resources/enemies/ENEMY.gd" type="Script" id=1]
+[ext_resource path="res://assets/ui/thug_portrait.png" type="Texture" id=2]
+[ext_resource path="res://resources/equipment/wooden_codgel.tres" type="Resource" id=3]
+
+[resource]
+script = ExtResource( 1 )
+name = "Thug"
+portrait = ExtResource( 2 )
+health = 10
+equipment = [ ExtResource( 3 ) ]

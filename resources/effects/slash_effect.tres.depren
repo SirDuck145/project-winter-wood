@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/effects/EFFECT_DATA.gd" type="Script" id=1]
+[ext_resource path="res://resources/effects/slash.gd" type="Script" id=2]
+
+[resource]
+script = ExtResource( 1 )
+weight = 1.0
+effect_script = ExtResource( 2 )
+trigger_at_end_player_turn = true

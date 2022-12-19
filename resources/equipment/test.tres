@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=7 format=2]
+
+[ext_resource path="res://resources/equipment/EQUIPMENT.gd" type="Script" id=1]
+[ext_resource path="res://resources/faces/miss_data.tres" type="Resource" id=2]
+[ext_resource path="res://resources/faces/slash_data.tres" type="Resource" id=3]
+[ext_resource path="res://resources/faces/slash_data_2.tres" type="Resource" id=4]
+[ext_resource path="res://resources/faces/slash_data_3.tres" type="Resource" id=5]
+[ext_resource path="res://assets/equipment/sword.png" type="Texture" id=6]
+
+[resource]
+script = ExtResource( 1 )
+equipment_sprite = ExtResource( 6 )
+columns = 3
+rows = 6
+faces = [ [ ExtResource( 3 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 2 ) ], [ ExtResource( 3 ), ExtResource( 3 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 2 ) ], [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 2 ), ExtResource( 2 ), ExtResource( 2 ) ] ]

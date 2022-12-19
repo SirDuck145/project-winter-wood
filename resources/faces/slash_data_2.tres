@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://resources/faces/FACE.gd" type="Script" id=1]
+[ext_resource path="res://assets/ui/slot_faces/slash_face_2.png" type="Texture" id=2]
+[ext_resource path="res://resources/effects/slash_effect.tres" type="Resource" id=3]
+
+[resource]
+script = ExtResource( 1 )
+face_sprite = ExtResource( 2 )
+effects = [ ExtResource( 3 ) ]
+effects_weights = [ 2.0 ]

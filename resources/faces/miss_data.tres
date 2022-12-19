@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://assets/ui/miss_face.png" type="Texture" id=1]
+[ext_resource path="res://resources/faces/FACE.gd" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+face_sprite = ExtResource( 1 )
+effects = [  ]
+effects_weights = [ 1.0 ]

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" load_steps=7 format=2]
+
+[ext_resource path="res://resources/faces/FACE.gd" type="Script" id=1]
+[ext_resource path="res://assets/ui/slot_faces/slash_face_3.png" type="Texture" id=2]
+[ext_resource path="res://resources/effects/EFFECT_DATA.gd" type="Script" id=3]
+[ext_resource path="res://resources/effects/slash.gd" type="Script" id=4]
+[ext_resource path="res://assets/ui/status_icons/attack_status_icon.png" type="Texture" id=5]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 3 )
+effect_script = ExtResource( 4 )
+effect_sprite = ExtResource( 5 )
+trigger_at_start_player_turn = false
+trigger_at_end_player_turn = true
+trigger_at_start_enemy_turn = false
+trigger_at_end_enemy_turn = false
+
+[resource]
+script = ExtResource( 1 )
+face_sprite = ExtResource( 2 )
+effects = [ SubResource( 1 ) ]
+effects_weights = [ 3.0 ]

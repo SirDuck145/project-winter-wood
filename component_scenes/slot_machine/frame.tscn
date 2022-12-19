@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://component_scenes/slot_machine/frame.gd" type="Script" id=2]
+[ext_resource path="res://component_scenes/slot_machine/frame_style.tres" type="Theme" id=3]
+
+[node name="Frame" type="ScrollContainer"]
+margin_right = 60.0
+margin_bottom = 48.0
+theme = ExtResource( 3 )
+scroll_horizontal_enabled = false
+script = ExtResource( 2 )
+
+[node name="FaceContainer" type="VBoxContainer" parent="."]
+
+[node name="Tween" type="Tween" parent="."]

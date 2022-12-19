@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://shaders/highlight_shader.tres" type="Shader" id=1]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/shine_color = Color( 1, 1, 1, 0.705882 )
+shader_param/shine_speed = 2.0
+shader_param/shine_size = 0.01
