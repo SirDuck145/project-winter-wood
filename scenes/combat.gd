@@ -15,81 +15,40 @@ var player_equipment = [preload("res://resources/equipment/test.tres")]
 var enemy_intentions_locked = 0
 
 func _ready():
-	# Setup the player equipment
+	setup_player()
+	setup_enemies()
+	player_phase_cleanup()
+
+func setup_player():
 	for equipment in player_equipment:
 		var slot_machine = slot_machine_scene.instance()
 		equipment_container.add_child(slot_machine)
 		slot_machine.setup(equipment)
-	
-	# Setup all the player equipment to target
-	for equipment in equipment_container.get_children():
-		equipment.connect("attempting_to_acquire_target", self, "handle_targeting")
-	
-	# Register enemies for targeting
+		slot_machine.connect("attempting_to_acquire_target", self, "handle_targeting")
+
+func setup_enemies():
+	# TODO Eventually must fill enemy_container from passed data, just loop for now
 	for enemy in enemy_container.get_children():
-		enemy.connect("targeted", self, "handle_targeted")
+		enemy.connect("targeted", self, "handle_enemy_targeted")
 		enemy.connect("intentions_locked_in", self, "handle_enemy_intentions_locked")
 		
-		# Setup the enemy equipment
 		for equipment in enemy.enemy_data.equipment:
-			var slot_machine = slot_machine_scene.instance()
-			enemy_equipment_container.add_child(slot_machine)
-			slot_machine.setup(equipment, true)
-			slot_machine.connect("slot_machine_finished_rolling", enemy, "handle_slot_machine_finished_rolling")
-			enemy.slot_machines.append(slot_machine)
-	
-	player_phase_cleanup()
+			create_enemy_slot_machine(equipment, enemy)
 
-func handle_targeting(slot_machine):
-	attacking_slot_machine = slot_machine
-	highlight_targets()
-	disable_slot_machines_with_exceptions([attacking_slot_machine])
-
-func highlight_targets():
-	# Highlight the targets
-	for enemy in enemy_container.get_children():
-		enemy.apply_new_material(highlight_shader_material)
-		enemy.set_targetable(true)
-
-func remove_highlight_from_enemies():
-	# Highlight the targets
-	for enemy in enemy_container.get_children():
-		enemy.remove_material()
-		enemy.set_targetable(false)
-
-func disable_slot_machines_with_exceptions(exceptions):
-	# Disable other options
-	for equipment in equipment_container.get_children():
-		if not equipment in exceptions:
-			equipment.fully_disable()
-
-func enable_slot_machines_with_exceptions(exceptions):
-	# Disable other options
-	for equipment in equipment_container.get_children():
-		if not equipment in exceptions:
-			equipment.fully_enable()
-
-func handle_targeted(target):
-	attacking_slot_machine.execute_on_target(target)
-	attacking_slot_machine = null
-	enable_slot_machines_with_exceptions([])
-	remove_highlight_from_enemies()
-
-func _on_EndTurnButton_pressed():
-	player_phase_cleanup()
 
 func player_phase_begin():
 	equipment_animator.play("heroEquipmentIn")
 	turn_button_animator.play("enter")
 	handle_start_of_player_turn_triggers()
 
+
 func player_phase_cleanup():
-	# Check for end of player turn triggers
 	equipment_animator.play("heroEquipmentOut")
 	turn_button_animator.play("exit")
 	yield(turn_button_animator, "animation_finished")
 	yield(handle_end_of_player_turn_triggers(), "completed")
 	enemy_phase_begin()
+
 
 func enemy_phase_begin():
 	# Check for start of enemy turn triggers
@@ -100,6 +59,7 @@ func enemy_phase_begin():
 	for enemy in enemy_container.get_children():
 		enemy.spin_slot_machines()
 
+
 # This method is called from handle_enemy_intentions_locked 
 # once all enemy intentions have been provided
 func enemy_phase_cleanup():
@@ -108,12 +68,6 @@ func enemy_phase_cleanup():
 	# Check for end of enemy turn triggers
 	player_phase_begin()
 
-func handle_enemy_intentions_locked():
-	enemy_intentions_locked += 1
-	
-	if enemy_intentions_locked >= enemy_container.get_child_count():
-		yield(get_tree().create_timer(0.8), "timeout")
-		enemy_phase_cleanup()
 
 func handle_start_of_player_turn_triggers():
 	# Reset all slot machines for the player
@@ -123,16 +77,18 @@ func handle_start_of_player_turn_triggers():
 	# Check all statuses to see if they trigger on player turn start
 	pass
 
+
 func handle_end_of_player_turn_triggers():
-	# Loop through all statuses for player end turn triggers
-	# Trigger all intents for each enemy
+	# TODO: Loop through all statuses for player end turn triggers
+	handle_all_enemy_intentions()
+	yield(get_tree(), "idle_frame")
+
+func handle_all_enemy_intentions():
 	for enemy in enemy_container.get_children():
 		if enemy.intention_statuses.keys().size() > 0:
 			yield(get_tree().create_timer(0.6), "timeout")
 			handle_enemy_intentions(enemy)
-	
-	yield(get_tree(), "idle_frame")
-	
+
 
 func handle_enemy_intentions(_enemy):
 	# Loop through all intentions
@@ -146,3 +102,65 @@ func handle_enemy_intentions(_enemy):
 	
 	if total_damage > 0:
 		player.take_damage(total_damage)
+
+
+func create_enemy_slot_machine(equipment, enemy):
+	var slot_machine = slot_machine_scene.instance()
+	enemy_equipment_container.add_child(slot_machine)
+	slot_machine.setup(equipment, true)
+	slot_machine.connect("slot_machine_finished_rolling", enemy, "handle_slot_machine_finished_rolling")
+	enemy.slot_machines.append(slot_machine)
+
+
+func highlight_targets():
+	for enemy in enemy_container.get_children():
+		enemy.apply_new_material(highlight_shader_material)
+		enemy.set_targetable(true)
+
+
+func remove_highlight_from_enemies():
+	for enemy in enemy_container.get_children():
+		enemy.remove_material()
+		enemy.set_targetable(false)
+
+
+func disable_slot_machines_with_exceptions(exceptions):
+	for equipment in equipment_container.get_children():
+		if not equipment in exceptions:
+			equipment.fully_disable()
+
+
+func enable_slot_machines_with_exceptions(exceptions):
+	for equipment in equipment_container.get_children():
+		if not equipment in exceptions:
+			equipment.fully_enable()
+
+###################################
+# SIGNAL TRIGGERED METHODS BELOW
+###################################
+
+# Signal from player slot machine
+func handle_targeting(slot_machine):
+	attacking_slot_machine = slot_machine
+	highlight_targets()
+	disable_slot_machines_with_exceptions([attacking_slot_machine])
+
+
+# Signal from an enemy after being targeted with an attack
+func handle_enemy_targeted(target):
+	attacking_slot_machine.execute_on_target(target)
+	attacking_slot_machine = null
+	enable_slot_machines_with_exceptions([])
+	remove_highlight_from_enemies()
+
+
+func handle_enemy_intentions_locked():
+	enemy_intentions_locked += 1
+	
+	if enemy_intentions_locked >= enemy_container.get_child_count():
+		yield(get_tree().create_timer(0.8), "timeout")
+		enemy_phase_cleanup()
+
+
+func _on_EndTurnButton_pressed():
+	player_phase_cleanup()
