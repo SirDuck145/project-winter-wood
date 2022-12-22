@@ -33,6 +33,7 @@ void fragment()
 [sub_resource type="OpenSimplexNoise" id=12]
 
 [sub_resource type="NoiseTexture" id=13]
+height = 1024
 seamless = true
 noise = SubResource( 12 )
 
@@ -63,7 +64,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 1047, 2 ), Vector2( 367, 2 ) ]
+"values": [ Vector2( 1047, 2 ), Vector2( 485, 2 ) ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -79,7 +80,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 367, 2 ), Vector2( 1047, 2 ) ]
+"values": [ Vector2( 485, 2 ), Vector2( 1047, 2 ) ]
 }
 
 [sub_resource type="Animation" id=1]
@@ -95,7 +96,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( -571, 2 ), Vector2( 367, 2 ) ]
+"values": [ Vector2( -571, 2 ), Vector2( 193, 2 ) ]
 }
 
 [sub_resource type="Animation" id=14]
@@ -111,7 +112,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 367, 2 ), Vector2( -571, 2 ) ]
+"values": [ Vector2( 193, 2 ), Vector2( -571, 2 ) ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -157,44 +158,42 @@ texture = ExtResource( 3 )
 stretch_mode = 7
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-margin_left = 181.0
+margin_left = 86.0
 margin_top = 284.0
-margin_right = 181.0
+margin_right = 86.0
 margin_bottom = 284.0
 
 [node name="EquipmentContainer" type="VBoxContainer" parent="."]
-margin_left = 367.0
+margin_left = -571.0
 margin_top = 2.0
-margin_right = 367.0
+margin_right = -571.0
 margin_bottom = 528.0
 custom_constants/separation = 74
 alignment = 1
 
 [node name="EnemyEquipmentContainer" type="VBoxContainer" parent="."]
-margin_left = 367.0
+margin_left = 1047.0
 margin_top = 2.0
-margin_right = 367.0
+margin_right = 1047.0
 margin_bottom = 528.0
 custom_constants/separation = 74
 alignment = 1
 
 [node name="EnemyContainer" type="VBoxContainer" parent="."]
-margin_left = 948.0
-margin_top = 37.0
-margin_right = 948.0
-margin_bottom = 563.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/separation = 170
+margin_left = 878.0
+margin_top = -18.0
+margin_right = 878.0
+margin_bottom = 508.0
+custom_constants/separation = 192
 alignment = 1
 
 [node name="Enemy" parent="EnemyContainer" instance=ExtResource( 1 )]
-margin_top = 178.0
-margin_bottom = 178.0
+margin_top = 167.0
+margin_bottom = 167.0
 
 [node name="Enemy2" parent="EnemyContainer" instance=ExtResource( 1 )]
-margin_top = 348.0
-margin_bottom = 348.0
+margin_top = 359.0
+margin_bottom = 359.0
 
 [node name="Frame" type="NinePatchRect" parent="."]
 margin_right = 1024.0
