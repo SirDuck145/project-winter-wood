@@ -18,7 +18,7 @@ func attacked(damage):
 	damage_to_take = damage
 	# Check for every status that triggers on attacked
 	for status in statuses_container.get_children():
-		if status.effect_data.trigger_at_attacked:
+		if status.effect_data.effect_trigger == Globals.EFFECT_TRIGGERS.on_attacked:
 			status.effect_data.effect_script.trigger_effect(self, status)
 	
 	take_damage(damage_to_take)

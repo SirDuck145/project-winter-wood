@@ -42,6 +42,10 @@ config/name="Winter Wood"
 run/main_scene="res://scenes/combat.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Globals="*res://helper_scripts/globals.gd"
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true

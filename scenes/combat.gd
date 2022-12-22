@@ -46,15 +46,16 @@ func player_phase_cleanup():
 	equipment_animator.play("heroEquipmentOut")
 	turn_button_animator.play("exit")
 	yield(turn_button_animator, "animation_finished")
-	yield(handle_end_of_player_turn_triggers(), "completed")
-	yield(get_tree().create_timer(1), "timeout")
+	handle_status_triggers(Globals.EFFECT_TRIGGERS.on_end_player_turn)
 	enemy_phase_begin()
 
 
 func enemy_phase_begin():
-	# Check for start of enemy turn triggers
+	handle_status_triggers(Globals.EFFECT_TRIGGERS.on_start_enemy_turn)
+	yield(handle_all_enemy_intentions(), "completed")
+	yield(get_tree().create_timer(1), "timeout")
+	
 	enemy_intentions_locked = 0
-	# Slide in enemy slot machines
 	equipment_animator.play("enemyEquipmentIn")
 	yield(equipment_animator, "animation_finished")
 	for enemy in enemy_container.get_children():
@@ -66,8 +67,7 @@ func enemy_phase_begin():
 func enemy_phase_cleanup():
 	equipment_animator.play("enemyEquipmentOut")
 	yield(equipment_animator, "animation_finished")
-	# Check for end of enemy turn triggers
-	handle_end_of_enemy_turn_triggers()
+	handle_status_triggers(Globals.EFFECT_TRIGGERS.on_end_enemy_turn)
 	player_phase_begin()
 
 
@@ -76,14 +76,8 @@ func handle_start_of_player_turn_triggers():
 	for slot_machine in equipment_container.get_children():
 		slot_machine.refresh()
 	
-	# Check all statuses to see if they trigger on player turn start
-	pass
+	handle_status_triggers(Globals.EFFECT_TRIGGERS.on_start_player_turn)
 
-
-func handle_end_of_player_turn_triggers():
-	# TODO: Loop through all statuses for player end turn triggers
-	yield(handle_all_enemy_intentions(), "completed")
-	yield(get_tree(), "idle_frame")
 
 func handle_all_enemy_intentions():
 	for enemy in enemy_container.get_children():
@@ -93,17 +87,6 @@ func handle_all_enemy_intentions():
 	
 	yield(get_tree(), "idle_frame")
 
-func handle_end_of_enemy_turn_triggers():
-	# For enemies
-	for enemy in enemy_container.get_children():
-		for status in enemy.statuses_container.get_children():
-			if status.effect_data.trigger_at_end_enemy_turn:
-				status.effect_data.effect_script.trigger_effect(enemy, status)
-	
-	# For allies
-	for status in player.statuses_container.get_children():
-		if status.effect_data.trigger_at_end_enemy_turn:
-			status.effect_data.effect_script.trigger_effect(player, status)
 
 func handle_enemy_intentions(_enemy):
 	# Loop through all intentions
@@ -149,6 +132,19 @@ func enable_slot_machines_with_exceptions(exceptions):
 	for equipment in equipment_container.get_children():
 		if not equipment in exceptions:
 			equipment.fully_enable()
+
+# TODO make it so that we use the trigger type to handle ALL trigger cases (Check if the statuses varaible is checked for the passed type of trigger)
+func handle_status_triggers(trigger_type):
+	# For enemies
+	for enemy in enemy_container.get_children():
+		for status in enemy.statuses_container.get_children():
+			if status.effect_data.effect_trigger == trigger_type:
+				status.effect_data.effect_script.trigger_effect(enemy, status)
+	
+	# For allies
+	for status in player.statuses_container.get_children():
+		if status.effect_data.effect_trigger == trigger_type:
+			status.effect_data.effect_script.trigger_effect(player, status)
 
 ###################################
 # SIGNAL TRIGGERED METHODS BELOW
