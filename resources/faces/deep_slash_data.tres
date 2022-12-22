@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/faces/FACE.gd" type="Script" id=1]
+[ext_resource path="res://assets/ui/slot_faces/deep_slash_face.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+face_sprite = ExtResource( 2 )
+effects = [  ]
+effects_weights = [ 1.0, 2.0 ]
