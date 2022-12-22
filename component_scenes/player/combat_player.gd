@@ -24,7 +24,6 @@ func attacked(damage):
 	take_damage(damage_to_take)
 
 func take_damage(damage):
-	print("Player taking damage =>", damage)
 	var new_health = health - damage
 	health -= damage
 	

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=8 format=2]
+[gd_resource type="Resource" load_steps=9 format=2]
 
 [ext_resource path="res://resources/equipment/EQUIPMENT.gd" type="Script" id=1]
 [ext_resource path="res://resources/faces/miss_data.tres" type="Resource" id=2]
@@ -7,10 +7,11 @@
 [ext_resource path="res://resources/faces/slash_data_3.tres" type="Resource" id=5]
 [ext_resource path="res://assets/equipment/sword.png" type="Texture" id=6]
 [ext_resource path="res://resources/faces/shield_data.tres" type="Resource" id=7]
+[ext_resource path="res://resources/faces/deep_slash_data.tres" type="Resource" id=8]
 
 [resource]
 script = ExtResource( 1 )
 equipment_sprite = ExtResource( 6 )
 columns = 3
 rows = 6
-faces = [ [ ExtResource( 3 ), ExtResource( 3 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ) ], [ ExtResource( 3 ), ExtResource( 3 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 7 ), ExtResource( 7 ) ], [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 2 ), ExtResource( 2 ) ] ]
+faces = [ [ ExtResource( 3 ), ExtResource( 3 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 7 ) ], [ ExtResource( 3 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 7 ) ], [ ExtResource( 5 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 8 ), ExtResource( 2 ), ExtResource( 2 ) ] ]

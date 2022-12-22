@@ -67,6 +67,7 @@ func enemy_phase_cleanup():
 	equipment_animator.play("enemyEquipmentOut")
 	yield(equipment_animator, "animation_finished")
 	# Check for end of enemy turn triggers
+	handle_end_of_enemy_turn_triggers()
 	player_phase_begin()
 
 
@@ -92,6 +93,17 @@ func handle_all_enemy_intentions():
 	
 	yield(get_tree(), "idle_frame")
 
+func handle_end_of_enemy_turn_triggers():
+	# For enemies
+	for enemy in enemy_container.get_children():
+		for status in enemy.statuses_container.get_children():
+			if status.effect_data.trigger_at_end_enemy_turn:
+				status.effect_data.effect_script.trigger_effect(enemy, status)
+	
+	# For allies
+	for status in player.statuses_container.get_children():
+		if status.effect_data.trigger_at_end_enemy_turn:
+			status.effect_data.effect_script.trigger_effect(player, status)
 
 func handle_enemy_intentions(_enemy):
 	# Loop through all intentions

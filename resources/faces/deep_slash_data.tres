@@ -1,10 +1,12 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://resources/faces/FACE.gd" type="Script" id=1]
 [ext_resource path="res://assets/ui/slot_faces/deep_slash_face.png" type="Texture" id=2]
+[ext_resource path="res://resources/effects/slash_effect.tres" type="Resource" id=3]
+[ext_resource path="res://resources/effects/bleed_effect.tres" type="Resource" id=4]
 
 [resource]
 script = ExtResource( 1 )
 face_sprite = ExtResource( 2 )
-effects = [  ]
+effects = [ ExtResource( 3 ), ExtResource( 4 ) ]
 effects_weights = [ 1.0, 2.0 ]
