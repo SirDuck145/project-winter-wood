@@ -7,6 +7,7 @@ var enemy_data = preload("res://resources/enemies/thug.tres")
 var max_health = enemy_data.health
 var health = max_health
 var intention_statuses = {}
+var statuses = {}
 var slot_machines = []
 var slot_machines_rolling = 0
 
@@ -17,6 +18,7 @@ onready var targetable_button = $TargetableButton
 onready var health_bar = $HealthBar
 onready var tween = $Tween
 onready var intention_statuses_container = $IntentionStatuses
+onready var statuses_container = $Statuses
 
 signal targeted
 signal enemy_died
@@ -106,3 +108,18 @@ func die():
 		slot_machine.queue_free()
 	queue_free()
 	emit_signal("enemy_died")
+
+func apply_status(effect, count):
+	if effect in statuses:
+		if effect.effect_script.is_stackable():
+			var status = statuses[effect]
+			status.set_stack_count(status.get_stack_count() + count)
+	else:
+		var status = status_scene.instance()
+		statuses_container.add_child(status)
+		status.setup(effect, count)
+		
+		statuses[effect] = status
+
+func remove_status(effect):
+	statuses.erase(effect)

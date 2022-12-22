@@ -1,21 +1,20 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://resources/effects/EFFECT_DATA.gd" type="Script" id=1]
-[ext_resource path="res://resources/effects/slash.gd" type="Script" id=2]
-[ext_resource path="res://assets/ui/status_icons/attack_status_icon.png" type="Texture" id=3]
+[ext_resource path="res://assets/ui/status_icons/defense_status_icon.png" type="Texture" id=2]
+[ext_resource path="res://resources/effects/defend.gd" type="Script" id=3]
 
 [resource]
-resource_local_to_scene = true
 script = ExtResource( 1 )
-effect_script = ExtResource( 2 )
-effect_sprite = ExtResource( 3 )
-apply_to_self = false
+effect_script = ExtResource( 3 )
+effect_sprite = ExtResource( 2 )
+apply_to_self = true
 apply_to_target = false
 trigger_at_start_player_turn = false
-trigger_at_end_player_turn = true
+trigger_at_end_player_turn = false
 trigger_at_start_enemy_turn = false
 trigger_at_end_enemy_turn = false
-trigger_at_attacked = false
+trigger_at_attacked = true
 trigger_at_attacking = false
 lose_stack_at_start_player_turn = false
 lose_stack_at_end_player_turn = false

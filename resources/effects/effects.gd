@@ -4,10 +4,16 @@ static func is_requirement_met():
 	return true
 
 static func get_damage(weight):
-	return weight
-
-static func get_statuses():
-	return null
+	return 0
 
 static func is_stackable():
 	return true
+
+static func trigger_effect(target, status):
+	pass
+
+static func trigger_spoilage():
+	pass
+
+static func apply_status():
+	pass

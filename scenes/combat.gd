@@ -23,7 +23,7 @@ func setup_player():
 	for equipment in player_equipment:
 		var slot_machine = slot_machine_scene.instance()
 		equipment_container.add_child(slot_machine)
-		slot_machine.setup(equipment)
+		slot_machine.setup(equipment, player)
 		slot_machine.connect("attempting_to_acquire_target", self, "handle_targeting")
 
 func setup_enemies():
@@ -47,6 +47,7 @@ func player_phase_cleanup():
 	turn_button_animator.play("exit")
 	yield(turn_button_animator, "animation_finished")
 	yield(handle_end_of_player_turn_triggers(), "completed")
+	yield(get_tree().create_timer(1), "timeout")
 	enemy_phase_begin()
 
 
@@ -80,7 +81,7 @@ func handle_start_of_player_turn_triggers():
 
 func handle_end_of_player_turn_triggers():
 	# TODO: Loop through all statuses for player end turn triggers
-	handle_all_enemy_intentions()
+	yield(handle_all_enemy_intentions(), "completed")
 	yield(get_tree(), "idle_frame")
 
 func handle_all_enemy_intentions():
@@ -88,6 +89,8 @@ func handle_all_enemy_intentions():
 		if enemy.intention_statuses.keys().size() > 0:
 			yield(get_tree().create_timer(0.6), "timeout")
 			handle_enemy_intentions(enemy)
+	
+	yield(get_tree(), "idle_frame")
 
 
 func handle_enemy_intentions(_enemy):
@@ -101,13 +104,13 @@ func handle_enemy_intentions(_enemy):
 	_enemy.wipe_intention_statuses()
 	
 	if total_damage > 0:
-		player.take_damage(total_damage)
+		player.attacked(total_damage)
 
 
 func create_enemy_slot_machine(equipment, enemy):
 	var slot_machine = slot_machine_scene.instance()
 	enemy_equipment_container.add_child(slot_machine)
-	slot_machine.setup(equipment, true)
+	slot_machine.setup(equipment, enemy, true)
 	slot_machine.connect("slot_machine_finished_rolling", enemy, "handle_slot_machine_finished_rolling")
 	enemy.slot_machines.append(slot_machine)
 

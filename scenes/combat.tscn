@@ -1,11 +1,46 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://component_scenes/enemies/enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://component_scenes/player/combat_player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/ui/dark_background.png" type="Texture" id=3]
 [ext_resource path="res://scenes/combat.gd" type="Script" id=6]
 [ext_resource path="res://assets/ui/end_turn_border.png" type="Texture" id=7]
 [ext_resource path="res://assets/ui/end_turn_background.png" type="Texture" id=8]
 [ext_resource path="res://assets/ui/end_turn_image.png" type="Texture" id=9]
+
+[sub_resource type="Shader" id=10]
+code = "shader_type canvas_item;
+
+uniform vec2 direction = vec2(1, 0);
+uniform float speed = 0.1;
+uniform sampler2D noise;
+
+vec4 overlay(vec4 base, vec4 blend){
+	vec4 limit = step(0.5, base);
+	return mix(2.0 * base * blend, 1.0 - 2.0 * (1.0 - base) * (1.0 - blend), limit);
+}
+
+void fragment()
+{
+	// image texture
+	vec4 base = texture(TEXTURE, UV);
+	// noise texture
+	vec4 blend = texture(noise, UV + ( direction * speed * TIME));
+	
+	COLOR = overlay(base, blend);
+}"
+
+[sub_resource type="OpenSimplexNoise" id=12]
+
+[sub_resource type="NoiseTexture" id=13]
+seamless = true
+noise = SubResource( 12 )
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = SubResource( 10 )
+shader_param/direction = Vector2( 1, -1 )
+shader_param/speed = 0.01
+shader_param/noise = SubResource( 13 )
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 1, 0.92549, 0.839216, 0.156863 )
@@ -60,10 +95,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 367, -679 ), Vector2( 367, 2 ) ]
+"values": [ Vector2( -571, 2 ), Vector2( 367, 2 ) ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=14]
 resource_name = "heroEquipmentOut"
 length = 0.3
 tracks/0/type = "value"
@@ -76,7 +111,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 367, 2 ), Vector2( 367, -679 ) ]
+"values": [ Vector2( 367, 2 ), Vector2( -571, 2 ) ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -114,15 +149,17 @@ tracks/0/keys = {
 [node name="Combat" type="Node2D"]
 script = ExtResource( 6 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
+material = SubResource( 11 )
 margin_right = 1039.0
 margin_bottom = 626.0
-color = Color( 0.0509804, 0.168627, 0.270588, 1 )
+texture = ExtResource( 3 )
+stretch_mode = 7
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-margin_left = 75.0
+margin_left = 181.0
 margin_top = 284.0
-margin_right = 75.0
+margin_right = 181.0
 margin_bottom = 284.0
 
 [node name="EquipmentContainer" type="VBoxContainer" parent="."]
@@ -134,9 +171,9 @@ custom_constants/separation = 74
 alignment = 1
 
 [node name="EnemyEquipmentContainer" type="VBoxContainer" parent="."]
-margin_left = 1047.0
+margin_left = 367.0
 margin_top = 2.0
-margin_right = 1047.0
+margin_right = 367.0
 margin_bottom = 528.0
 custom_constants/separation = 74
 alignment = 1
@@ -200,7 +237,7 @@ custom_styles/normal = SubResource( 5 )
 anims/enemyEquipmentIn = SubResource( 8 )
 anims/enemyEquipmentOut = SubResource( 9 )
 anims/heroEquipmentIn = SubResource( 1 )
-anims/heroEquipmentOut = SubResource( 2 )
+anims/heroEquipmentOut = SubResource( 14 )
 
 [node name="TurnButtonAnimator" type="AnimationPlayer" parent="."]
 anims/enter = SubResource( 6 )

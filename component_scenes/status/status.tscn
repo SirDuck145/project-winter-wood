@@ -87,3 +87,5 @@ hframes = 10
 [node name="InOutAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/in = SubResource( 1 )
 anims/out = SubResource( 2 )
+
+[node name="Tween" type="Tween" parent="."]

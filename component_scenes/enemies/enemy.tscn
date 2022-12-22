@@ -30,6 +30,14 @@ grow_vertical = 0
 rect_min_size = Vector2( 127, 16 )
 columns = 4
 
+[node name="Statuses" type="GridContainer" parent="."]
+margin_left = -72.0
+margin_top = 73.0
+margin_right = 72.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 127, 16 )
+columns = 4
+
 [node name="Background" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 

@@ -34,3 +34,10 @@ custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 2 )
 value = 100.0
 percent_visible = false
+
+[node name="StatusesContainer" type="GridContainer" parent="."]
+margin_left = -72.0
+margin_top = 73.0
+margin_right = 72.0
+margin_bottom = 89.0
+columns = 4

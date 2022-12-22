@@ -16,13 +16,16 @@ onready var used_disabler = $UsedDisabler
 var frames = []
 var active_frames = []
 var frames_rolling = 0
+var owner_of_slot_machine
 
 signal attempting_to_acquire_target
 signal slot_machine_finished_rolling
 
 #func _ready():
 #	setup(equipment)
-func setup(equipment, owned_by_enemy = false):
+func setup(equipment, _owner, owned_by_enemy = false):
+	owner_of_slot_machine = _owner
+	
 	# For each column in the equipment create a frame
 	for column in equipment.columns:
 		var frame = frame_scene.instance()
@@ -74,21 +77,23 @@ func refresh():
 	used_disabler.visible = false
 	spin_nonlocked_frames()
 
+# TODO: Refactor this code specifically, applying statuses and damage
 func execute_on_target(target):
 	var face_data
 	var total_damage = 0
 	# Loop over all faces and do the following
 	for frame in frames:
 	# Check if the requirement is met
-	# Calculate the statuses
 	# Calculate the damage
 		face_data = frame.get_active_frame_data()
 		var effect_index = 0
 		for effect in face_data.effects:
 			total_damage += effect.effect_script.get_damage(face_data.effects_weights[effect_index])
+			if effect.apply_to_target:
+				target.apply_status(effect, face_data.effects_weights[effect_index])
+			if effect.apply_to_self:
+				owner_of_slot_machine.apply_status(effect, face_data.effects_weights[effect_index])
 			effect_index += 1
-	# Determine if a direct hit or critical blow triggered
-	# Apply the effects to the target
 	target.take_damage(total_damage)
 	used_disabler.visible = true
 
